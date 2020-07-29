@@ -1,12 +1,12 @@
-version: '3'
+version: "3"
 
 networks:
   laravel:
 
 services:
-  site:
+  nginx:
     image: nginx:stable-alpine
-    container_name: nginx
+    container_name: pin_websever
     ports:
       - "8080:80"
     volumes:
@@ -20,26 +20,35 @@ services:
 
   mysql:
     image: mysql:5.7.29
-    container_name: mysql
+    container_name: db_mysql_pin
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: secret
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
     networks:
       - laravel
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  pma:
+    container_name: fbis_phpMyAdmin
+    environment:
+      MYSQL_DATABASE: pindb
+      MYSQL_ROOT_PASSWORD: secret
+      PMA_HOST: db_mysql_pin
+    image: phpmyadmin/phpmyadmin
+    networks:
+      - laravel
+    ports:
+      - 8889:80/tcp
 
   php:
     build:
       context: .
-      dockerfile: php.dockerfile
-    container_name: php
+      dockerfile: Dockerfile
+    container_name: pin
     volumes:
       - ./src:/var/www/html
     ports:
@@ -49,7 +58,7 @@ services:
 
   composer:
     image: composer:latest
-    container_name: composer
+    container_name: pin_composer
     volumes:
       - ./src:/var/www/html
     working_dir: /var/www/html
@@ -60,22 +69,22 @@ services:
 
   npm:
     image: node:13.7
-    container_name: npm
+    container_name: pin_npm
     volumes:
       - ./src:/var/www/html
     working_dir: /var/www/html
-    entrypoint: ['npm']
+    entrypoint: ["npm"]
 
   artisan:
     build:
       context: .
-      dockerfile: php.dockerfile
-    container_name: artisan
+      dockerfile: Dockerfile
+    container_name: pin_artisan
     volumes:
       - ./src:/var/www/html
     depends_on:
       - mysql
     working_dir: /var/www/html
-    entrypoint: ['php', '/var/www/html/artisan']
+    entrypoint: ["php", "/var/www/html/artisan"]
     networks:
       - laravel
