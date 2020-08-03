@@ -9,7 +9,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 RUN composer update
 
-RUN chown -R www-data:www-data /var/www/html && a2enmod rewrite
+RUN chown -R www-data:www-data /var/www/html 
 RUN chmod -R 777 public/uploads
 RUN php artisan key:generate
 RUN  php artisan jwt:secret
