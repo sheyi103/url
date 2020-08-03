@@ -1,5 +1,6 @@
 FROM php:7.4-fpm-alpine
 
+COPY ./src /var/www/html
 WORKDIR /var/www/html
 
 
