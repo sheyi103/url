@@ -29,6 +29,9 @@ Route::group([
 });
 
 
-Route::post('pins', 'PinController@store');
+Route::post('sponsored/pins', 'PinController@store');
+Route::post('category/pins', 'PinCategoryController@store');
+Route::get('category/pins', 'PinCategoryController@index');
+Route::post('unsponsored/pins', 'PinController@create');
 Route::get('pins', 'PinController@index');
 Route::post('pins/{pin}/{phone_number}', 'PinController@update');

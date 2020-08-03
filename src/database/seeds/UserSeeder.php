@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
             'password' => bcrypt('secret'),
 
             'phone_number' => '08026425250',
+            'role' => 'Admin',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 
