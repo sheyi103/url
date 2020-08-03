@@ -10,7 +10,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 RUN composer update
 
 RUN chown -R www-data:www-data /var/www/html 
-RUN chmod -R 777 public
+RUN chmod -R 777 /var/www/html/public
 RUN php artisan key:generate
 RUN  php artisan jwt:secret
 RUN php artisan cache:clear
