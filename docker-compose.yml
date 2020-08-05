@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: secret
     networks:
@@ -42,7 +42,7 @@ services:
     networks:
       - laravel
     ports:
-      - 8889:80/tcp
+      - 8888:80/tcp
 
   php:
     build:
